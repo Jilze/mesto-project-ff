@@ -8,78 +8,47 @@ const apiConfig = {
 
 const handleResponse = (res) => res.ok ? res.json() : Promise.reject(res.statusText);
 
-const fetchUserProfile = () => {
-	return fetch(`${apiEndpoint}/users/me`, {
-		method: "GET",
-		headers: apiConfig.headers
-	})
-		.then((res) => handleResponse(res));
+const request = (endpoint, options = {}) => {
+	const url = `${apiEndpoint}${endpoint}`;
+	const config = { ...options, headers: apiConfig.headers };
+	return fetch(url, config).then(handleResponse);
 };
 
-const fetchCards = () => {
-	return fetch(`${apiEndpoint}/cards`, {
-		method: "GET",
-		headers: apiConfig.headers
-	})
-		.then((res) => handleResponse(res));
-};
+const fetchUserProfile = () => request('/users/me', { method: "GET" });
+
+const fetchCards = () => request('/cards', { method: "GET" });
+
 const updateUserProfile = (name, about) => {
-	return fetch(`${apiEndpoint}/users/me`, {
+	return request('/users/me', {
 		method: 'PATCH',
-		headers: apiConfig.headers,
-		body: JSON.stringify({
-			name: name,
-			about: about
-		})
-	})
-		.then((res) => handleResponse(res));
+		body: JSON.stringify({ name, about })
+	});
 };
 
 const newCard = (name, link) => {
-	return fetch(`${apiEndpoint}/cards`, {
+	return request('/cards', {
 		method: 'POST',
-		headers: apiConfig.headers,
-		body: JSON.stringify({
-			name: name,
-			link: link
-		})
-	})
-		.then((res) => handleResponse(res));
+		body: JSON.stringify({ name, link })
+	});
 };
 
 const removeCard = (removedCardId) => {
-	return fetch(`${apiEndpoint}/cards/${removedCardId}`, {
-		method: "DELETE",
-		headers: apiConfig.headers
-	})
-		.then((res) => handleResponse(res))
+	return request(`/cards/${removedCardId}`, { method: "DELETE" });
 };
 
 const putLikeCard = (cardId) => {
-	return fetch(`${apiEndpoint}/cards/likes/${cardId}`, {
-		method: "PUT",
-		headers: apiConfig.headers
-	})
-		.then((res) => handleResponse(res))
+	return request(`/cards/likes/${cardId}`, { method: "PUT" });
 };
 
 const removeLikeFromCard = (cardId) => {
-	return fetch(`${apiEndpoint}/cards/likes/${cardId}`, {
-		method: "DELETE",
-		headers: apiConfig.headers
-	})
-		.then((res) => handleResponse(res))
+	return request(`/cards/likes/${cardId}`, { method: "DELETE" });
 };
 
 const updateProfileAvatar = (avatarUrl) => {
-	return fetch(`${apiEndpoint}/users/me/avatar`, {
+	return request('/users/me/avatar', {
 		method: 'PATCH',
-		headers: apiConfig.headers,
-		body: JSON.stringify({
-			avatar: avatarUrl
-		})
-	})
-		.then((res) => handleResponse(res))
+		body: JSON.stringify({ avatar: avatarUrl })
+	});
 };
 
 export {

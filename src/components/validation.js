@@ -17,13 +17,14 @@ const hasInvalidInput = (inputElementsArr) => {
 };
 
 const toggleButtonState = (form, inputList, settings) => {
-	const button = form.querySelector(settings.submitButtonSelector);
-	if (hasInvalidInput(inputList)) {
-		button.setAttribute('disabled', true);
-		button.classList.add(settings.inactiveButtonClass);
+	const submitButton = form.querySelector(settings.submitButtonSelector);
+	const isInvalid = hasInvalidInput(inputList);
+	if (isInvalid) {
+		submitButton.setAttribute('disabled', true);
+		submitButton.classList.add(settings.inactiveButtonClass);
 	} else {
-		button.removeAttribute('disabled');
-		button.classList.add(settings.inactiveButtonClass);
+		submitButton.removeAttribute('disabled');
+		submitButton.classList.remove(settings.inactiveButtonClass);
 	}
 };
 
